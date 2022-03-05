@@ -93,6 +93,12 @@ namespace DeviceManagementSystem.Controllers
                     RamAmmount = model.RamAmount
                 };
 
+                foreach (DeviceDetails device in _context.DeviceDetails)
+                {
+                    if (device == newDevice)
+                        return BadRequest(new { message = "device already exists!" });
+                }
+
                 try
                 {
                     var result = await _context.DeviceDetails.AddAsync(newDevice);
