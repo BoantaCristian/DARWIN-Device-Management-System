@@ -4,14 +4,16 @@ using DeviceManagementSystem.Models.ApplicationContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeviceManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220305105635_inadvertently user has a device not opposite")]
+    partial class inadvertentlyuserhasadevicenotopposite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +35,7 @@ namespace DeviceManagementSystem.Migrations
 
                     b.Property<string>("Processor");
 
-                    b.Property<double>("RamAmmount");
+                    b.Property<string>("RamAmmount");
 
                     b.Property<string>("Type");
 

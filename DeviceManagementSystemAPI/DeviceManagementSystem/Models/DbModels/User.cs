@@ -9,6 +9,6 @@ namespace DeviceManagementSystem.Models.DbModels
     public class User : IdentityUser
     {
         public string Location { get; set; }
-        public virtual ICollection<DeviceDetails> Device { get; set; }
+        public virtual DeviceDetails Device { get; set; }
     }
 }

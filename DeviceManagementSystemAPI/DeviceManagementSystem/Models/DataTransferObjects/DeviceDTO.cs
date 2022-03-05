@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DeviceManagementSystem.Models.DbModels
+namespace DeviceManagementSystem.Models.DataTransferObjects
 {
-    public class DeviceDetails
+    public class DeviceDTO
     {
-        [Key]
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Manufacturer { get; set; }
         public string Type { get; set; }
         public string OperatingSystem { get; set; }
         public string Processor { get; set; }
-        public double RamAmmount { get; set; }
-        public virtual ICollection<User> User { get; set; }
+        public double RamAmount { get; set; }
     }
 }
