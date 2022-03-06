@@ -1,0 +1,19 @@
+<h1 class="title">LOGIN</h1>
+<form [formGroup]="loginForm" autocomplete="off">
+    <mat-form-field class="col-md-10 offset-1">
+        <input type="text" matInput formControlName="Email" placeholder="Email">
+        <label class="text-danger" *ngIf="loginForm.get('Email').touched && loginForm.get('Email').errors?.required"> Required </label>
+        <label class="text-danger" *ngIf="loginForm.get('Email').touched && loginForm.get('Email').errors?.email"> Invalid email </label>
+    </mat-form-field>
+    <mat-form-field class="col-md-10 offset-1">
+        <input [type]="hide ? 'password' : 'text'" matInput formControlName="Password" placeholder="Password">
+        <button class="passwordType" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <label class="text-danger" *ngIf="loginForm.get('Password').touched && loginForm.get('Password').errors?.required"> Required </label>
+    </mat-form-field><br><br><br>
+    <button mat-raised-button (click)="login()" [disabled]="!loginForm.valid"> LOGIN </button>
+</form>
+<div class="redirect">
+    <a routerLink='/authentication/register'>create account <fa name="angle-right"></fa> </a>
+</div>

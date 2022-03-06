@@ -1,0 +1,2 @@
+<button mat-raised-button class="logout" color="warn" (click)="logout()"> Logout </button>
+<button mat-raised-button class="dashboard" color="primary" *ngIf="loggedUser.role == 'Admin'" routerLink="/admin"> Dashboard </button>

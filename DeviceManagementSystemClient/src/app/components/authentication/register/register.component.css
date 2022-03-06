@@ -1,0 +1,85 @@
+a{
+    text-decoration: none;
+    color: white;
+    font-weight: 200;
+    font-size: 17px;
+    position: relative;
+}
+.title{
+    color: white;
+    font-weight: 200;
+    text-align: center;
+    margin: 10px;
+}
+fa{
+    position: relative;
+    top: 2px;
+    font-size: 20px !important;
+    transition: 400ms ease-in-out !important;
+}
+.redirect{
+    position: absolute;
+    right: 25px;
+    bottom: -7.5%;
+    transition: 400ms ease-in-out;
+    padding: 5px;
+}
+.redirect:hover{
+    cursor: pointer;
+    transform: translateX(30px);
+    letter-spacing: 0.5px;
+}
+.redirect:hover fa{
+    padding-left: 5px;
+}
+.text-danger{
+    position: absolute;
+    left: 0;
+    top: 120%;
+}
+.text-danger2{
+    position: absolute;
+    left: 0;
+    top: 180%;
+    color: #d34561;
+}
+button{
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.24);
+    border-radius: 10px;
+    color: white;
+}
+button:hover{
+    background-color: rgba(0, 0, 0, 0.658);
+}
+form{
+    position: relative;
+    width: 80%;
+    margin: 20px auto;
+}
+mat-form-field{
+    margin-top: 5px;
+    color: white;
+    display: grid;
+}
+::ng-deep .mat-form-field-label {
+    color: white !important;
+}
+::ng-deep.mat-form-field-underline {
+    background-color: white !important;
+}
+::ng-deep.mat-form-field-ripple {
+    background-color: white !important;;
+}
+::ng-deep input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: white;
+}
+.passwordType{
+    top: 10px !important;
+}

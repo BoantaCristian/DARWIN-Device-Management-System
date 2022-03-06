@@ -46,15 +46,22 @@ namespace DeviceManagementSystem.Controllers
             };
             try
             {
+                var emailExists = await _userManager.FindByEmailAsync(model.Email);
+
+                if (emailExists != null)
+                    return BadRequest(new { message = "Email already taken" });
+
                 var result = await _userManager.CreateAsync(newUser, model.Password);
                 await _userManager.AddToRoleAsync(newUser, model.Role);
+
+               
 
                 //user registered with device
                 //var device = await _context.DeviceDetails.FindAsync(model.DeviceId);
                 //newUser.Device = device;
                 //await _context.SaveChangesAsync();
 
-                return Ok(newUser);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -80,7 +87,7 @@ namespace DeviceManagementSystem.Controllers
                         new Claim(_options.ClaimsIdentity.RoleClaimType, role.FirstOrDefault())
                     }),
                     Expires = DateTime.UtcNow.AddDays(10),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1234567890123456")), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var securityToken = tokenHandler.CreateToken(tokenDescriptor);
@@ -109,6 +116,7 @@ namespace DeviceManagementSystem.Controllers
             {
                 return new
                 {
+                    user.UserName,
                     user.Email,
                     user.Location,
                     role,

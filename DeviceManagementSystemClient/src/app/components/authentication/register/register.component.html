@@ -1,0 +1,36 @@
+<h1 class="title">REGISTER</h1>
+<form [formGroup]="registerForm" autocomplete="off"><br>
+    <mat-form-field class="col-md-10 offset-1">
+        <input type="text" matInput formControlName="UserName" placeholder="Username">
+        <label class="text-danger" *ngIf="registerForm.get('UserName').touched && registerForm.get('UserName').errors?.required"> Required </label>
+    </mat-form-field>
+    <mat-form-field class="col-md-10 offset-1">
+        <input type="text" matInput formControlName="Email" placeholder="Email">
+        <label class="text-danger" *ngIf="registerForm.get('Email').touched && registerForm.get('Email').errors?.required"> Required </label>
+        <label class="text-danger" *ngIf="registerForm.get('Email').touched && registerForm.get('Email').errors?.email"> Invalid email </label>
+    </mat-form-field>
+    <mat-form-field class="col-md-10 offset-1">
+        <input type="text" matInput formControlName="Location" placeholder="Location">
+        <label class="text-danger" *ngIf="registerForm.get('Location').touched && registerForm.get('Location').errors?.required"> Required </label>
+    </mat-form-field>
+    <mat-form-field class="col-md-10 offset-1">
+        <input [type]="hide ? 'password' : 'text'" matInput formControlName="Password" placeholder="Password" (input)="comparePasswords()">
+        <button class="passwordType" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <label class="text-danger" *ngIf="registerForm.get('Password').touched && registerForm.get('Password').errors?.required"> Required </label>
+        <label class="text-danger" *ngIf="registerForm.get('Password').touched && registerForm.get('Password').errors?.minlength"> Minimum 4 characters </label>
+    </mat-form-field>
+    <mat-form-field class="col-md-10 offset-1">
+        <input [type]="hide ? 'password' : 'text'" matInput formControlName="ConfirmPassword" placeholder="Confirm Password" (input)="comparePasswords()">
+        <button class="passwordType" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <label class="text-danger" *ngIf="registerForm.get('ConfirmPassword').touched && registerForm.get('ConfirmPassword').errors?.required"> Required </label>
+        <label class="text-danger text-danger2" *ngIf="registerForm.get('ConfirmPassword').touched && mismatch"> Passwords mismatch </label>
+    </mat-form-field><br><br>
+    <button mat-raised-button (click)="register()" [disabled]="!registerForm.valid || mismatch"> REGISTER </button>
+</form>
+<div class="redirect">
+    <a routerLink='/authentication/login'>already have an account <fa name="angle-right"></fa></a>
+</div>
