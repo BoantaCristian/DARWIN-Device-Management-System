@@ -47,14 +47,12 @@ export class RegisterComponent implements OnInit {
     
     this.service.register(body).subscribe(
       (res:any) => {
-        console.log(res)
         if(res.succeeded){
           this.toastr.success(`User ${body.UserName} created`,'Success!')
           this.registerForm.reset()
         }
         else {
           res.errors.forEach(element => {
-            console.log(element)
             if(element.code == 'DuplicateUserName')
               this.toastr.error('Username already taken', 'Register Failed!')
             else{

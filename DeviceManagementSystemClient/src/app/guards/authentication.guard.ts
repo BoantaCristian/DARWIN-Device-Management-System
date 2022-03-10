@@ -13,7 +13,10 @@ export class AuthenticationGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
       if(localStorage.getItem('token') != null){
-        this.router.navigateByUrl('')
+        if(localStorage.getItem('role') == 'Client')
+          this.router.navigateByUrl('')
+        if(localStorage.getItem('role') == 'Admin')
+          this.router.navigateByUrl('admin')
         return false
       }
       else

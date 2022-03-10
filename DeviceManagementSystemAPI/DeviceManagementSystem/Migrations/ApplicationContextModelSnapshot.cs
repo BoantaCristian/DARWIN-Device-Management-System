@@ -37,7 +37,11 @@ namespace DeviceManagementSystem.Migrations
 
                     b.Property<string>("Type");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("DeviceDetails");
                 });
@@ -216,15 +220,18 @@ namespace DeviceManagementSystem.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<int?>("DeviceId");
-
                     b.Property<string>("Location");
-
-                    b.HasIndex("DeviceId");
 
                     b.ToTable("User");
 
                     b.HasDiscriminator().HasValue("User");
+                });
+
+            modelBuilder.Entity("DeviceManagementSystem.Models.DbModels.DeviceDetails", b =>
+                {
+                    b.HasOne("DeviceManagementSystem.Models.DbModels.User", "User")
+                        .WithMany("DeviceDetails")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -270,13 +277,6 @@ namespace DeviceManagementSystem.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("DeviceManagementSystem.Models.DbModels.User", b =>
-                {
-                    b.HasOne("DeviceManagementSystem.Models.DbModels.DeviceDetails", "Device")
-                        .WithMany("User")
-                        .HasForeignKey("DeviceId");
                 });
 #pragma warning restore 612, 618
         }

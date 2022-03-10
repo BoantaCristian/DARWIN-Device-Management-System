@@ -1,2 +1,98 @@
 <button mat-raised-button class="logout" color="warn" (click)="logout()"> Logout </button>
-<button mat-raised-button class="dashboard" color="primary" *ngIf="loggedUser.role == 'Admin'" routerLink="/admin"> Dashboard </button>
+<div class="deviceListWrapper">
+    <mat-card>
+        <div *ngIf="loggedUserDevice.filteredData.length > 0">
+            <h1 class="title"> YOUR DEVICE </h1>
+            <mat-table [dataSource]="loggedUserDevice">
+                <ng-container matColumnDef="device">
+                    <mat-header-cell *matHeaderCellDef>NAME</mat-header-cell>
+                    <mat-cell *matCellDef="let deviceList"> 
+                        <form class="changeDeviceForm" (click)="checkAvailability($event)">
+                            <mat-form-field>
+                              <mat-label>{{deviceList.deviceName}}</mat-label>
+                              <input type="text" placeholder="" aria-label="Number" value="" matInput [formControl]="myControl" [matAutocomplete]="auto" (click)="stopPropagation($event)">
+                              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                <mat-option *ngFor="let device of filteredOptions | async" [value]="device.deviceName" (click)="changeDevice(device.id)">
+                                    <button [disabled]="device.userName != null" class="selectDeviceButton">  {{device.deviceName}} </button>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                        </form>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef>USER</mat-header-cell>
+                    <mat-cell *matCellDef="let deviceList"> {{deviceList.userName}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef> EMAIL </mat-header-cell>
+                    <mat-cell *matCellDef="let deviceList"> {{deviceList.email}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                    <mat-cell *matCellDef="let actions">
+                        <button mat-raised-button color="warn" class="delete" (click)="removeDevice(actions.id, $event)"> Remove </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayDeviceColumns"></mat-header-row>
+                <mat-row *matRowDef="let device; columns: displayDeviceColumns" (click)="openDeviceDetailsDialog(device.id)"></mat-row>
+            </mat-table>
+        </div>
+        <div *ngIf="loggedUserDevice.filteredData.length == 0">
+            <h1 class="title"> SELECT A DEVICE </h1>
+            <div class="selectDeviceWrapper">
+                <div class="selectDeviceField"> {{loggedUser.userName}} </div>
+                <div class="selectDeviceField"> {{loggedUser.email}} </div>
+                <form class="selectDeviceForm">
+                    <mat-form-field>
+                      <mat-label>{{availableDeviceStatus}}</mat-label>
+                      <input type="text" placeholder="" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                        <mat-option *ngFor="let device of filteredOptions | async" [value]="device.deviceName" (click)="assignDevice(device.id)">
+                          <button [disabled]="device.userName != null" class="selectDeviceButton"> {{device.deviceName}} </button>
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+    </mat-card><br><br>
+    <mat-card>
+        <h1 class="title"> DEVICE LIST </h1>
+        <mat-table [dataSource]="deviceList" matSort>
+            <ng-container matColumnDef="device">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>NAME</mat-header-cell>
+                <mat-cell *matCellDef="let deviceList"> {{deviceList.deviceName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="user">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>USER</mat-header-cell>
+                <mat-cell *matCellDef="let deviceList">
+                    <div *ngIf="deviceList.userName != null"> {{deviceList.userName}} </div>
+                    <div *ngIf="deviceList.userName == null"> Not assigned </div>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef> EMAIL </mat-header-cell>
+                <mat-cell *matCellDef="let deviceList">
+                    <div *ngIf="deviceList.email != null"> {{deviceList.email}} </div>
+                    <div *ngIf="deviceList.email == null"> Not assigned </div>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                <mat-cell *matCellDef="let actions">
+                    
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayDeviceColumns"></mat-header-row>
+            <mat-row *matRowDef="let device; columns: displayDeviceColumns" (click)="openDeviceDetailsDialog(device.id)"></mat-row>
+        </mat-table>
+        <mat-form-field class="search">
+            <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="search()">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-paginator #devicesPaginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons> </mat-paginator>
+    </mat-card>
+</div>

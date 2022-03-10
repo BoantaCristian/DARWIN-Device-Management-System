@@ -16,6 +16,6 @@ namespace DeviceManagementSystem.Models.DbModels
         public string OperatingSystem { get; set; }
         public string Processor { get; set; }
         public double RamAmmount { get; set; }
-        public virtual ICollection<User> User { get; set; }
+        public virtual User User { get; set; }
     }
 }

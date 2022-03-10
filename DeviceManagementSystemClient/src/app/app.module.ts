@@ -13,9 +13,10 @@ import { RegisterComponent } from './components/authentication/register/register
 import { AdminComponent } from './components/admin/admin.component';
 
 import { DeviceManagementService } from "./services/device-management.service";
-import { MatButtonModule, MatCardModule, MatIconModule, MatInputModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatDialogModule, MatIconModule, MatInputModule, MatListModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTooltipModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { DeviceDetailsComponent } from './dialogs/device-details/device-details.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ToastrModule } from 'ngx-toastr';
     LoginComponent,
     RegisterComponent,
     AdminComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    DeviceDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -34,8 +36,9 @@ import { ToastrModule } from 'ngx-toastr';
     AngularFontAwesomeModule,
     FormsModule, ReactiveFormsModule,
     ToastrModule.forRoot(),
-    MatCardModule, MatButtonModule, MatInputModule, MatIconModule
+    MatCardModule, MatButtonModule, MatInputModule, MatSelectModule, MatAutocompleteModule, MatIconModule, MatPaginatorModule, MatTableModule, MatSortModule, MatTooltipModule, MatDialogModule, MatListModule
   ],
+  entryComponents: [DeviceDetailsComponent],
   providers: [DeviceManagementService],
   bootstrap: [AppComponent]
 })

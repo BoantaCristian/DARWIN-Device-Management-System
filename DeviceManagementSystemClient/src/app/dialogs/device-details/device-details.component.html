@@ -1,0 +1,23 @@
+<mat-dialog-content>
+    <h1 class="title">{{device.name}}</h1>
+    <div class="detailsWrapper">
+        <div>
+            <mat-list role="list">
+                <mat-list-item role="listitem"> Manufacturer: </mat-list-item>
+                <mat-list-item role="listitem"> Type: </mat-list-item>
+                <mat-list-item role="listitem"> Operating System: </mat-list-item>
+                <mat-list-item role="listitem"> Processor: </mat-list-item>
+                <mat-list-item role="listitem"> RAM Amount: </mat-list-item>
+            </mat-list>
+        </div>
+        <div class="deviceDetails">
+            <mat-list role="list">
+                <mat-list-item role="listitem"> {{device.manufacturer}} </mat-list-item>
+                <mat-list-item role="listitem"> {{device.type}} </mat-list-item>
+                <mat-list-item role="listitem"> {{device.operatingSystem}} </mat-list-item>
+                <mat-list-item role="listitem"> {{device.processor}} </mat-list-item>
+                <mat-list-item role="listitem"> {{device.ramAmmount}}GB </mat-list-item>
+            </mat-list>
+        </div>
+    </div>
+</mat-dialog-content>

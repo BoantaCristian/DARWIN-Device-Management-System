@@ -1,0 +1,14 @@
+.title{
+    color: white;
+    font-weight: 200;
+    text-align: center;
+    margin: 10px;
+}
+.detailsWrapper{
+    display: flex;
+    position: inherit;
+    width: 100%;
+}
+mat-list-item{
+    color: white !important;
+}
