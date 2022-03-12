@@ -28,8 +28,8 @@ The application has a REST architecture (Representational State Transfer):
   * Postman to check Api http methods
  
  - Estimations
-  * total time: 7 days from start to finish
-  * 4 days of work: 
+   * total time: 7 days from start to finish
+   * 4 days of work: 
       * 1st day (~3h): project interpretation + api basics -> configure project, add db connection, authentication, models, migrations, database, user controler basics (crud)
       * 2nd day (~3h): user interface -> initialize components, set graphics, add routing, add guards, assign desired components to web pages, develop login and register
       * 3rd day (~6h): user interface + device controller -> update home page (logged client) dynamically (devices list, manage client's device) and develop view device details
