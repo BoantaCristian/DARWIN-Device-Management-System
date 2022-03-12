@@ -227,7 +227,7 @@ namespace DeviceManagementSystem.Controllers
 
                     await _context.SaveChangesAsync();
 
-                    return Ok(newDevice);
+                    return Ok(currentUser);
                 }
                 else
                     return BadRequest(new { message = "Device or user not found!" });

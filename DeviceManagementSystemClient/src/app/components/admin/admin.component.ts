@@ -259,7 +259,7 @@ export class AdminComponent implements OnInit {
   assignUser(deviceId, userName){
     this.service.assignDevice(deviceId, userName).subscribe(
       (res: any) => {
-        this.toastr.success(`Device ${res.name} assigned`, 'Success!')
+        this.toastr.success(`Decive assigned to ${res.userName}`, 'Success!')
         this.handleUserDeviceAssignmentUpdates()
       },
       err => {
