@@ -82,4 +82,10 @@ mat-form-field{
 }
 .passwordType{
     top: 10px !important;
+    background-color: transparent;
+    transition: all 400ms ease;
+}
+.passwordType:hover{
+    background-color: transparent;
+    color: rgb(65, 65, 65);
 }

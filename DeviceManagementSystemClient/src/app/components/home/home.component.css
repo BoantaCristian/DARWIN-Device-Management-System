@@ -11,13 +11,6 @@
     right: 10px;
     border-radius: 10px;
 }
-.dashboard{
-    position: absolute;
-    top: 10px;
-    right: 100px;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.411);
-}
 .logout:hover{
     background-color: white;
     color: red;
@@ -32,7 +25,7 @@
 .dashboard:hover{
     background-color: rgba(0, 0, 0, 0.658);
 }
-.deviceListWrapper{
+.homeWrapper{
     width: 60%;
     min-width: 816px;
     margin: 0 auto;
@@ -123,22 +116,22 @@ input{
     padding-left: 15px;
 }
 .mat-column-Device {
-    flex: 0 0 25% !important;
+    flex: 25% 0 0 0 !important;
     width: 25% !important;
     min-width: 100px !important;
 }
 .mat-column-User {
-    flex: 0 0 25% !important;
+    flex: 0 25% 0 0 !important;
     width: 25% !important;
     min-width: 100px !important;
 }
 .mat-column-Email {
-    flex: 0 0 30% !important;
+    flex: 0 0 30% 0 !important;
     width: 30% !important;
     min-width: 180px !important;
 }
 .mat-column-actions {
-    flex: 0 0 15% !important;
+    flex: 0 0 0 15% !important;
     width: 15% !important;
 }
 mat-cell form{
@@ -167,9 +160,6 @@ mat-option{
     input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: white;
-}
-.mat-divider {
-    border-top-color: rgb(255, 0, 0) !important;
 }
 ::ng-deep.mat-dialog-container {
     background-color: rgba(209, 209, 209, 0.397) !important;

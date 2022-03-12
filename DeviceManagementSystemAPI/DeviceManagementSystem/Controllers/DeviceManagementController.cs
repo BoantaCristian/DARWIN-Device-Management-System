@@ -76,9 +76,9 @@ namespace DeviceManagementSystem.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Client")]
+        [Authorize(Roles = "Admin")]
         [Route("AddDevice")]
-        public async Task<IActionResult> AddAssociation(DeviceDTO model)
+        public async Task<IActionResult> AddDevice(DeviceDTO model)
         {
             var newDevice = new DeviceDetails
             {
@@ -92,7 +92,7 @@ namespace DeviceManagementSystem.Controllers
 
             foreach (DeviceDetails device in _context.DeviceDetails)
             {
-                if (device == newDevice)
+                if (device.Name == newDevice.Name)
                     return BadRequest(new { message = "device already exists!" });
             }
 
@@ -101,7 +101,7 @@ namespace DeviceManagementSystem.Controllers
                 var result = await _context.DeviceDetails.AddAsync(newDevice);
                 await _context.SaveChangesAsync();
 
-                return Ok(result);
+                return Ok();
             }
             catch (Exception ex)
             {

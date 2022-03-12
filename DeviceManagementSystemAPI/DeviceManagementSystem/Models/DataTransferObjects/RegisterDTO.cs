@@ -12,7 +12,6 @@ namespace DeviceManagementSystem.Models.DataTransferObjects
         public string Password { get; set; }
         public string Location { get; set; }
         public string Role { get; set; }
-        //public int DeviceId { get; set; }
 
     }
 }

@@ -9,3 +9,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
     background-position: center;
     background-repeat: no-repeat;
     font-family: 'Poppins', sans-serif;}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background-color: #bfefff;
+    background: linear-gradient(#bfefff, #83b0f1, #9186d1);
+}
+::-webkit-scrollbar-thumb {
+    background: #6375a0; 
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #4d495e;
+}

@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
     ConfirmPassword: ['', Validators.required]
   })
 
-  mismatch = false
+  mismatch: boolean = false
   hide = true;
   
   ngOnInit() {

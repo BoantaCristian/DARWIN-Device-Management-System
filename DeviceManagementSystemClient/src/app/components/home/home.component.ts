@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
   loggedUserDevice = new MatTableDataSource();
   displayDeviceColumns: string[] = ["device", "user", "email", "actions"]
   availableDeviceStatus: string = "No device available"
-  myControl = new FormControl();
+  manageDeviceFromControl = new FormControl();
   filteredOptions: Observable<any[]>;
   searchKey: string;
 
@@ -72,19 +72,17 @@ export class HomeComponent implements OnInit {
         
         let availableDevice = false
         res.forEach(element => {
-            
           if(element.userName == null){
             availableDevice = true
             return
           }
         });
         if(availableDevice){
-          this.myControl.enable();
+          this.manageDeviceFromControl.enable();
           this.availableDeviceStatus = "Change device"
         }
-        else{
-          this.myControl.disable();
-        }
+        else
+          this.manageDeviceFromControl.disable();
       },
       err => {
         console.log(err)
@@ -170,7 +168,7 @@ export class HomeComponent implements OnInit {
   }
 
   fetchDevicesForAutocomplete(){
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.manageDeviceFromControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value)),
     );
@@ -186,7 +184,7 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {this.getDevices()}, 200);
     setTimeout(()=> this.fetchDevicesForAutocomplete(), 400)
     setTimeout(()=> this.fetchDataTable(), 300)
-    setTimeout(()=> this.myControl.reset(), 300)
+    setTimeout(()=> this.manageDeviceFromControl.reset(), 300)
   }
 
   onSearchClear(){

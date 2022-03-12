@@ -1,10 +1,299 @@
 .logout{
-    position: absolute;
+    position: fixed;
     top: 10px;
     right: 10px;
+    border-radius: 10px;
 }
-.home{
+.logout:hover{
+    color: red;
+    background-color: white;
+}
+.adminWrapper{
+    width: 80%;
+    min-width: 816px;
+    min-height: 100vh;
+    margin: 0 auto;
+    position: relative;
+}
+.userWrapper, .deviceWrapper{
+    display: flex;
+    position: relative !important;
+    top: 50vh;
+    transform: translateY(-50%);
+}
+.userList{
+    flex: 70%;
+    min-width: 836px;
+    min-height: 500px;
+}
+.deviceList{
+    flex: 70%;
+    margin-left: 5%;
+    min-width: 990px;
+    min-height: 500px;
+}
+.addUser{
+    flex: 25%;
+    margin-left: 5%;
+    max-height: 500px;
+    min-width: 384px;
+}
+.manageDevice{
+    flex: 25%;
+    max-height: 500px;
+    min-width: 384px;
+}
+.title{
+    color: white;
+    font-weight: 200;
+    text-align: center;
+    margin: 10px;
+}
+.deviceActions{
+    margin: 0 auto !important;
+    position: relative;
+    left: 15px;
+    height: 50px;
+}
+button{
+    margin: 0px 5px;
+}
+.delete{
+    border-radius: 10px;
+    margin: auto;
+    margin-left: 10px;
     position: absolute;
-    top: 10px;
-    right: 100px;
+    right: 60px;
+    background-color: #d34561;
+}
+.delete:hover{
+    background-color: white;
+    color: #d34561;
+}
+.addUserButton{
+    position: relative;
+    left: 50%;
+    top: -10px;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.24);
+    border-radius: 10px;
+    color: white;
+}
+.addUserButton:hover:enabled{
+    background-color: rgba(0, 0, 0, 0.658);
+}
+.deleteDeviceButton{
+    border-radius: 10px;
+    top: 7px;
+    background-color: #d34561;
+}
+.deleteDeviceButton:hover:enabled{
+    background-color: white;
+    color: #d34561;
+}
+.updateButtonsWrapper{
+    display: flex;
+    position: relative;
+    left: 50%;
+    top: -17px;
+    transform: translate(-50%, -50%);
+    justify-content: space-around;
+}
+.updateButton{
+    background-color: rgba(0, 0, 0, 0.24);
+    border-radius: 10px;
+    top: 6px;
+    color: white;
+}
+.updateButton:hover:enabled{
+    background-color: rgba(0, 0, 0, 0.658);
+}
+.selectedDevice{
+    background-color: rgba(255, 255, 255, 0.123);
+    cursor: pointer;
+}
+.search{
+    position: absolute;
+    bottom: 15px;
+    margin-left: 43px;
+    z-index: 1;
+    color: white;
+}
+.text-danger{
+    position: absolute;
+    left: 0;
+    top: 120%;
+}
+.text-danger2{
+    position: absolute;
+    left: 0;
+    top: 180%;
+    color: #d34561;
+}
+.passwordType{
+    background-color: transparent;
+    transition: all 400ms ease;
+}
+.passwordType:hover{
+    background-color: transparent;
+    color: rgb(65, 65, 65);
+}
+.formRow{
+    position: relative;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    max-width: 280px;
+}
+.formCol{
+    position: relative;
+    width: 100%;
+    padding: 0 10px;
+    margin: 5px 0px 5px !important;
+}
+mat-card{
+    border: none !important;
+    background-color: rgba(75, 75, 75, 0.205);
+    backdrop-filter: blur(15px) !important;
+    border-radius: 40px;
+    box-shadow: 0 15px 30px 1px rgba(0, 0, 0, 0.329) !important;
+}
+mat-form-field{
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    color: white;
+}
+.mat-input-element {
+    color: white !important;
+}
+mat-table, mat-paginator{
+    background-color: transparent !important;
+    margin: 20px 20px !important;
+    color: white;
+    font-size: 14px;
+}
+mat-paginator{
+    margin-right: 30px !important;
+    position: absolute;
+    right: 13px;
+    bottom: 0px;
+}
+::ng-deep .mat-paginator .mat-icon-button{
+    color: white !important;
+}
+::ng-deep .mat-paginator-page-size-options {
+    color: white !important;
+}
+mat-header-cell{
+    color: white !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 16px;
+}
+mat-cell{
+    color: white !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+mat-row:hover{
+    background-color: rgba(255, 255, 255, 0.123);
+    cursor: pointer;
+}
+.changeDeviceForm{
+    height: 50px;
+    position: relative;
+    left: 20px;
+}
+.changeDeviceForm mat-form-field{
+    width: 170px;
+    margin: 0 auto;
+}
+input{
+    color: white;
+}
+::ng-deep .mat-sort-header-arrow {
+    color: white !important;
+}
+mat-cell form{
+    margin: 0 auto;
+}
+.matOptionButton{
+    padding: 0 !important;
+}
+mat-option button{
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    text-align: left;
+    margin-left: 0px !important;
+}
+::ng-deep .mat-form-field-label {
+    color: white !important;
+}
+::ng-deep.mat-select .mat-select-trigger .mat-select-value {
+    color: white !important;
+}
+::ng-deep.mat-select .mat-select-trigger .mat-select-arrow {
+    color: white !important;
+}
+::ng-deep.mat-form-field-underline {
+    background-color: white !important;
+}
+::ng-deep.mat-form-field-ripple {
+    background-color: white !important;;
+}
+::ng-deep input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: white;
+}
+::ng-deep.mat-dialog-container {
+    background-color: rgba(209, 209, 209, 0.397) !important;
+    backdrop-filter: blur(5px) !important;
+    border-radius: 20px !important;
+}
+/* user columns */
+.mat-column-userName {
+    flex: 0 0 20% !important;
+    width: 20% !important;
+    min-width: 142px !important;
+}
+.mat-column-email {
+    flex: 0 0 22.5% !important;
+    width: 22.5% !important;
+    min-width: 210px !important;
+}
+.mat-column-location {
+    flex: 0 0 32.5% !important;
+    width: 32.5% !important;
+    min-width: 150px !important;
+}
+.mat-column-role {
+    flex: 0 0 10% !important;
+    width: 10% !important;
+    min-width: 50px !important;
+}
+.mat-column-actions {
+    flex: 0 0 15% !important;
+    width: 15% !important;
+}
+/* device columns */
+.mat-column-device {
+    flex: 0 0 17% !important;
+    width: 17% !important;
+    /* min-width: 142px !important; */
+}
+.mat-column-user {
+    flex: 0 0 13% !important;
+    width: 13% !important;
+    /* min-width: 210px !important; */
+}
+.mat-column-userEmail {
+    flex: 0 0 20% !important;
+    width: 20% !important;
+    /* min-width: 150px !important; */
+}
+.mat-column-deviceActions {
+    flex: 0 0 50% !important;
+    min-width: 496px !important;
 }

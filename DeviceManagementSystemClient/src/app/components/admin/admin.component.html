@@ -1,1 +1,210 @@
 <button mat-raised-button class="logout" color="warn" (click)="logout()"> Logout </button>
+<div class="adminWrapper">
+    <div class="userWrapper">
+        <mat-card class="userList">
+            <h1 class="title"> USERS </h1>
+            <mat-table [dataSource]="users" matSort>
+                <ng-container matColumnDef="userName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> USERNAME </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.userName}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="role">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> ROLE </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.role}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="location">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> LOCATION </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> 
+                        <div *ngIf="user.location != ''"> {{user.location}} </div>
+                        <div *ngIf="user.location == ''"> not assigned </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                    <mat-cell *matCellDef="let action">
+                        <button mat-raised-button color="warn" class="delete" (click)="deleteUser(action.userName)"> Delete </button>
+                    </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="userColumns"></mat-header-row>
+                <mat-row *matRowDef="let device; columns: userColumns"></mat-row>
+            </mat-table><br><br><br>
+            <mat-form-field class="search">
+                <input matInput [(ngModel)]="searchUserKey" placeholder="Search" autocomplete="off" (keyup)="search('users')">
+                <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchUserKey" (click)="onSearchClear()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <mat-paginator #usersPaginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons> </mat-paginator>
+        </mat-card>
+        <mat-card class="addUser">
+            <h1 class="title"> ADD USER </h1>
+            <form [formGroup]="addUserForm" autocomplete="off"><br>
+                <div class="formRow">
+                    <mat-form-field class="formCol">
+                        <input type="text" matInput formControlName="UserName" placeholder="Username">
+                        <label class="text-danger" *ngIf="addUserForm.get('UserName').touched && addUserForm.get('UserName').errors?.required"> Required </label>
+                    </mat-form-field>
+                </div>
+                <div class="formRow">
+                    <mat-form-field class="formCol">
+                        <input type="text" matInput formControlName="Email" placeholder="Email">
+                        <label class="text-danger" *ngIf="addUserForm.get('Email').touched && addUserForm.get('Email').errors?.required"> Required </label>
+                        <label class="text-danger" *ngIf="addUserForm.get('Email').touched && addUserForm.get('Email').errors?.email"> Invalid email </label>
+                    </mat-form-field>
+                </div>
+                <div class="formRow">
+                    <mat-form-field class="formCol">
+                        <mat-label>Select Role</mat-label>
+                        <mat-select formControlName="Role">
+                            <mat-option *ngFor="let role of roles" [value]="role" (click)="selectRole(role)">
+                            {{role}}
+                            </mat-option>
+                        </mat-select>
+                        <label class="text-danger" *ngIf="addUserForm.get('Role').touched && addUserForm.get('Role').errors?.required"> Required </label>
+                    </mat-form-field>
+                    <mat-form-field class="formCol" *ngIf="displayLocation">
+                        <input type="text" matInput formControlName="Location" placeholder="Location">
+                    </mat-form-field>
+                </div>
+                <div class="formRow">
+                    <mat-form-field class="formCol">
+                        <input [type]="hide ? 'password' : 'text'" matInput formControlName="Password" placeholder="Password" (input)="comparePasswords()">
+                        <button class="passwordType" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <label class="text-danger" *ngIf="addUserForm.get('Password').touched && addUserForm.get('Password').errors?.required"> Required </label>
+                        <label class="text-danger" *ngIf="addUserForm.get('Password').touched && addUserForm.get('Password').errors?.minlength"> Minimum 4 characters </label>
+                    </mat-form-field>
+                    <mat-form-field class="formCol">
+                        <input [type]="hide ? 'password' : 'text'" matInput formControlName="ConfirmPassword" placeholder="Confirm" (input)="comparePasswords()">
+                        <button class="passwordType" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <label class="text-danger" *ngIf="addUserForm.get('ConfirmPassword').touched && addUserForm.get('ConfirmPassword').errors?.required"> Required </label>
+                        <label class="text-danger text-danger2" *ngIf="addUserForm.get('ConfirmPassword').touched && mismatch"> Mismatch </label>
+                    </mat-form-field>
+                </div><br><br>
+                <button mat-raised-button class="addUserButton" (click)="addUser()" [disabled]="!addUserForm.valid || mismatch || (addUserForm.value.Role == 'Client' && addUserForm.value.Location == '')"> Add user </button>
+            </form>
+        </mat-card>
+    </div><br><br>
+</div>
+<div class="adminWrapper">
+    <div class="deviceWrapper">
+        <mat-card class="manageDevice">
+            <h1 class="title" *ngIf="!updateMode"> ADD DEVICE </h1>
+            <h1 class="title" *ngIf="updateMode"> UPDATE DEVICE </h1>
+            <form [formGroup]="deviceForm" autocomplete="off"><br>
+                <div class="formRow">
+                    <mat-form-field class="formCol">
+                        <input type="text" matInput formControlName="Name" placeholder="Name">
+                        <label class="text-danger" *ngIf="deviceForm.get('Name').touched && deviceForm.get('Name').errors?.required"> Required </label>
+                    </mat-form-field>
+                </div>
+                <div class="formRow">
+                    <mat-form-field class="formCol">
+                        <input type="text" matInput formControlName="Manufacturer" placeholder="Manufacturer">
+                        <label class="text-danger" *ngIf="deviceForm.get('Manufacturer').touched && deviceForm.get('Manufacturer').errors?.required"> Required </label>
+                    </mat-form-field>
+                    <mat-form-field class="formCol">
+                        <input type="text" matInput formControlName="OperatingSystem" placeholder="OperatingSystem">
+                        <label class="text-danger" *ngIf="deviceForm.get('OperatingSystem').touched && deviceForm.get('OperatingSystem').errors?.required"> Required </label>
+                    </mat-form-field>
+                </div>
+                <div class="formRow">
+                    <mat-form-field class="formCol">
+                        <mat-label>Select Type</mat-label>
+                        <mat-select formControlName="Type">
+                            <mat-option *ngFor="let type of deviceTypes" [value]="type">
+                            {{type}}
+                            </mat-option>
+                        </mat-select>
+                        <label class="text-danger" *ngIf="deviceForm.get('Type').touched && deviceForm.get('Type').errors?.required"> Required </label>
+                    </mat-form-field>
+                </div>
+                <div class="formRow">
+                    <mat-form-field class="formCol">
+                        <input matInput formControlName="Processor" placeholder="Processor">
+                        <label class="text-danger" *ngIf="deviceForm.get('Processor').touched && deviceForm.get('Processor').errors?.required"> Required </label>
+                    </mat-form-field>
+                    <mat-form-field class="formCol">
+                        <input type="number" min="1" oninput="this.value<0 ? this.value= this.value * -1 : this.value" matInput formControlName="RamAmount" placeholder="Ram">
+                        <label class="text-danger" *ngIf="deviceForm.get('RamAmount').touched && deviceForm.get('RamAmount').errors?.required"> Required </label>
+                    </mat-form-field>
+                </div><br><br>
+                <button mat-raised-button *ngIf="!updateMode" class="addUserButton" (click)="addDevice()" [disabled]="!deviceForm.valid"> Add Device </button>
+                <div class="updateButtonsWrapper">
+                    <button mat-raised-button *ngIf="updateMode" class="updateButton" (click)="updateDevice()" [disabled]="!deviceForm.valid"> Update Device </button>
+                    <button mat-raised-button *ngIf="updateMode" color="warn" class="deleteDeviceButton" (click)="cancelUpdate($event)"> Cancel </button>
+                </div>
+            </form>
+        </mat-card>
+        <mat-card class="deviceList">
+            <h1 class="title"> DEVICES </h1>
+            <mat-table [dataSource]="deviceList" matSort>
+            <ng-container matColumnDef="device">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>NAME</mat-header-cell>
+                <mat-cell *matCellDef="let deviceList"> {{deviceList.deviceName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="user">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>USER</mat-header-cell>
+                <mat-cell *matCellDef="let deviceList">
+                    <div *ngIf="deviceList.userName != null"> {{deviceList.userName}} </div>
+                    <div *ngIf="deviceList.userName == null"> Not assigned </div>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="userEmail">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> EMAIL </mat-header-cell>
+                <mat-cell *matCellDef="let deviceList">
+                    <div *ngIf="deviceList.email != null"> {{deviceList.email}} </div>
+                    <div *ngIf="deviceList.email == null"> Not assigned </div>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="deviceActions">
+                <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                <mat-cell *matCellDef="let action">
+                    <form class="changeDeviceForm" (click)="checkAvailability($event)">
+                        <mat-form-field *ngIf="action.userName != null">
+                          <mat-label>{{availableDeviceStatus}}</mat-label>
+                          <input type="text" placeholder="" aria-label="Number" value="" matInput [formControl]="changeDeviceFromControl" [matAutocomplete]="auto" (click)="stopPropagation($event)">
+                          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                            <mat-option *ngFor="let device of filteredDevices | async" [value]="device.deviceName" class="matOptionButton" (click)="changeDevice(device.id, action.userName)">
+                                <button [disabled]="device.userName != null" class="selectDeviceButton">  {{device.deviceName}} </button>
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="action.userName == null">
+                          <mat-label>{{availableUserStatus}}</mat-label>
+                          <input type="text" placeholder="" aria-label="Number" value="" matInput [formControl]="assignUserFromControl" [matAutocomplete]="auto" (click)="stopPropagation($event)">
+                          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                            <mat-option *ngFor="let user of filteredUsers | async" [value]="user.userName" class="matOptionButton" (click)="assignUser(action.id, user.userName)">
+                                <button [disabled]="user.deviceName != 'No device'" class="selectDeviceButton">  {{user.userName}} </button>
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                    </form>
+                    <div class="deviceActions">
+                        <button mat-raised-button *ngIf="!updateMode || deviceToUpdate.id != action.id" class="updateButton" (click)="fetchDevice(action.id, $event)"> Update </button>
+                        <button mat-raised-button *ngIf="updateMode && deviceToUpdate.id == action.id" color="warn" class="deleteDeviceButton" (click)="cancelUpdate($event)"> Cancel </button>
+                        <button mat-raised-button color="warn" class="deleteDeviceButton" [disabled]="action.userName == null || (updateMode && deviceToUpdate.id == action.id)" (click)="removeDevice(action.id, $event)"> Remove </button>
+                        <button mat-raised-button color="warn" class="deleteDeviceButton" [disabled]="updateMode && deviceToUpdate.id == action.id" (click)="deleteDevice(action.id, $event)"> Delete </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayDeviceColumns"></mat-header-row>
+            <mat-row *matRowDef="let device; columns: displayDeviceColumns" (click)="openDeviceDetailsDialog(device.id)"></mat-row>
+        </mat-table><br><br>
+        <mat-form-field class="search">
+            <input matInput [(ngModel)]="searchDeviceKey" placeholder="Search" autocomplete="off" (keyup)="search('devices')">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchDeviceKey" (click)="onSearchClear()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-paginator #devicesPaginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons> </mat-paginator>
+        </mat-card>
+    </div>
+</div>

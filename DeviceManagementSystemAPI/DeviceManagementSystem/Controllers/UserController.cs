@@ -54,13 +54,6 @@ namespace DeviceManagementSystem.Controllers
                 var result = await _userManager.CreateAsync(newUser, model.Password);
                 await _userManager.AddToRoleAsync(newUser, model.Role);
 
-               
-
-                //user registered with device
-                //var device = await _context.DeviceDetails.FindAsync(model.DeviceId);
-                //newUser.Device = device;
-                //await _context.SaveChangesAsync();
-
                 return Ok(result);
             }
             catch (Exception ex)
@@ -138,28 +131,33 @@ namespace DeviceManagementSystem.Controllers
 
             if (userToDelete != null)
             {
-                if(role == "Admin")
+                if (role == "Admin")
                 {
                     var admins = await _userManager.GetUsersInRoleAsync("Admin");
                     if (admins.Count() == 1)
                         return BadRequest(new { message = "Cannot delete last admin!" });
 
                 }
-                else
+
+                try
                 {
-                    try
+                    foreach (DeviceDetails device in _context.DeviceDetails.Include(i => i.User))
                     {
-                        await _userManager.RemoveFromRoleAsync(userToDelete, role);
-                        await _userManager.DeleteAsync(userToDelete);
-
-                        return Ok(userToDelete);
+                        if(device.User == userToDelete)
+                            return BadRequest(new { message = "User has device!" });
                     }
-                    catch (Exception e)
-                    {
 
-                        throw e;
-                    }
-                }       
+                    await _userManager.RemoveFromRoleAsync(userToDelete, role);
+                    await _userManager.DeleteAsync(userToDelete);
+
+                    return Ok(userToDelete);
+                }
+                catch (Exception e)
+                {
+
+                    throw e;
+                }
+                       
                 return BadRequest(new { message = "Something went wrong!" });
             }
             else
@@ -168,43 +166,46 @@ namespace DeviceManagementSystem.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("UpdateUser")]
+        [HttpGet]
+        [Route("GetUsers")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateUser(RegisterDTO model)
+        public async Task<Object> GetUsers()
+        {
+            var admins = (await _userManager.GetUsersInRoleAsync("Admin")).Select(s => new { s.Id, s.UserName, s.Email, s.Location, Role = "Admin" }).ToList();
+            var clients = (await _userManager.GetUsersInRoleAsync("Client")).Select(s => new { s.Id, s.UserName, s.Email, s.Location ,Role = "Client" }).ToList();
+
+            var users = new List<Object>();
+
+            foreach (var admin in admins)
+                users.Add(admin);
+
+            foreach (var client in clients)
+                users.Add(client);
+
+            return users;
+        }
+        
+        [HttpGet]
+        [Route("GetFreeUsers")]
+        [Authorize(Roles = "Admin")]
+        public Object GetFreeUsers()
         {
             try
             {
-                var currentUser = await _userManager.FindByNameAsync(model.UserName);
-                var roleObject = await _userManager.GetRolesAsync(currentUser);
-                var role = roleObject.First();
+                var freeUsers =
+                    from user in _context.Users
+                    join device in _context.DeviceDetails on user.Id equals device.User.Id into ps
+                    from free in ps.DefaultIfEmpty()
+                    where user.Location != ""
+                    select new { user.UserName, DeviceName = free == null ? "No device" : free.Name};
 
-                if (currentUser != null)
-                {
-                    currentUser.UserName = model.UserName;
-                    currentUser.Email = model.Email;
-
-                    if(role != model.Role)
-                    {
-                        await _userManager.RemoveFromRoleAsync(currentUser, role);
-                        await _userManager.AddToRoleAsync(currentUser, model.Role);
-                    }
-
-                    await _userManager.UpdateAsync(currentUser);
-
-                    return Ok(currentUser);
-                }
-                else
-                {
-                    return BadRequest(new { message = "User not found!" });
-                }
+                return freeUsers;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
 
-                throw ex;
+                throw e;
             }
-
         }
     }
 }

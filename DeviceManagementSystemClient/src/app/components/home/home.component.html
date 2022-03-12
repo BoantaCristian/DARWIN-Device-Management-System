@@ -1,5 +1,5 @@
 <button mat-raised-button class="logout" color="warn" (click)="logout()"> Logout </button>
-<div class="deviceListWrapper">
+<div class="homeWrapper">
     <mat-card>
         <div *ngIf="loggedUserDevice.filteredData.length > 0">
             <h1 class="title"> YOUR DEVICE </h1>
@@ -10,7 +10,7 @@
                         <form class="changeDeviceForm" (click)="checkAvailability($event)">
                             <mat-form-field>
                               <mat-label>{{deviceList.deviceName}}</mat-label>
-                              <input type="text" placeholder="" aria-label="Number" value="" matInput [formControl]="myControl" [matAutocomplete]="auto" (click)="stopPropagation($event)">
+                              <input type="text" placeholder="" aria-label="Number" value="" matInput [formControl]="manageDeviceFromControl" [matAutocomplete]="auto" (click)="stopPropagation($event)">
                               <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                                 <mat-option *ngFor="let device of filteredOptions | async" [value]="device.deviceName" (click)="changeDevice(device.id)">
                                     <button [disabled]="device.userName != null" class="selectDeviceButton">  {{device.deviceName}} </button>
@@ -30,8 +30,8 @@
                 </ng-container>
                 <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-                    <mat-cell *matCellDef="let actions">
-                        <button mat-raised-button color="warn" class="delete" (click)="removeDevice(actions.id, $event)"> Remove </button>
+                    <mat-cell *matCellDef="let action">
+                        <button mat-raised-button color="warn" class="delete" (click)="removeDevice(action.id, $event)"> Remove </button>
                     </mat-cell>
                 </ng-container>
                 <mat-header-row *matHeaderRowDef="displayDeviceColumns"></mat-header-row>
@@ -46,7 +46,7 @@
                 <form class="selectDeviceForm">
                     <mat-form-field>
                       <mat-label>{{availableDeviceStatus}}</mat-label>
-                      <input type="text" placeholder="" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                      <input type="text" placeholder="" aria-label="Number" matInput [formControl]="manageDeviceFromControl" [matAutocomplete]="auto">
                       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                         <mat-option *ngFor="let device of filteredOptions | async" [value]="device.deviceName" (click)="assignDevice(device.id)">
                           <button [disabled]="device.userName != null" class="selectDeviceButton"> {{device.deviceName}} </button>
