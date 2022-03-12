@@ -1,6 +1,6 @@
 ### DARWIN-Device-Management-System
 
-Demo video: https://youtu.be/s-CMQloGCl8
+Demo video: [Device Management System](https://www.youtube.com/watch?v=s-CMQloGCl8&list=PL6ntedEPd4LNxf9-jg7oqmyWHoSElMgAV&index=9)
 
 The application has a REST architecture (Representational State Transfer):
 
