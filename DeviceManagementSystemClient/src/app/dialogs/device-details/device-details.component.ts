@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { Device } from 'src/app/Models/Device';
 import { DeviceManagementService } from 'src/app/services/device-management.service';
 
 @Component({
@@ -8,8 +9,9 @@ import { DeviceManagementService } from 'src/app/services/device-management.serv
   styleUrls: ['./device-details.component.css']
 })
 export class DeviceDetailsComponent implements OnInit {
-  device: any = {};
-
+  
+  device = {} as Device;
+  
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private service: DeviceManagementService) { }
 
   ngOnInit() {
@@ -18,7 +20,7 @@ export class DeviceDetailsComponent implements OnInit {
 
   getDeviceDetails(){
     this.service.getDeviceDetails(this.data).subscribe(
-      res => {
+      (res: any) => {
         this.device = res
       },
       err => {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { DeviceManagementService } from 'src/app/services/device-management.service';
 import { ToastrService } from 'ngx-toastr';
+import { User } from 'src/app/Models/User';
 
 @Component({
   selector: 'app-register',
@@ -11,9 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private router: Router, private fb: FormBuilder, private service: DeviceManagementService,  private toastr: ToastrService) { }
+  constructor(private formBuilder: FormBuilder, private service: DeviceManagementService,  private toastr: ToastrService) { }
 
-  registerForm = this.fb.group({
+  registerForm = this.formBuilder.group({
     UserName: ['', Validators.required],
     Email: ['', [Validators.required, Validators.email]],
     Location: ['', Validators.required],
@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
   })
 
   mismatch: boolean = false
-  hide = true;
+  hide: boolean = true;
   
   ngOnInit() {
   }
@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-    var body = {
+    var body: User = {
       UserName: this.registerForm.value.UserName,
       Email: this.registerForm.value.Email,
       Location: this.registerForm.value.Location,

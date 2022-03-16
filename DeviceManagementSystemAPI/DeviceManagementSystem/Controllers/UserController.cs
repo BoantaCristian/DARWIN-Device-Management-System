@@ -157,8 +157,6 @@ namespace DeviceManagementSystem.Controllers
 
                     throw e;
                 }
-                       
-                return BadRequest(new { message = "Something went wrong!" });
             }
             else
             {

@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     Password: ['', Validators.required]
   })
   
-  hide = true;
+  hide: boolean = true;
 
   ngOnInit() {
   }

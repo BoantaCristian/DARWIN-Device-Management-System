@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { map, startWith } from 'rxjs/operators';
 import { DeviceDetailsComponent } from 'src/app/dialogs/device-details/device-details.component';
+import { Device } from 'src/app/Models/Device';
+import { FreeUser } from 'src/app/Models/FreeUser';
+import { User } from 'src/app/Models/User';
 import { DeviceManagementService } from 'src/app/services/device-management.service';
 
 @Component({
@@ -14,12 +17,11 @@ import { DeviceManagementService } from 'src/app/services/device-management.serv
 })
 export class AdminComponent implements OnInit {
   
-  users: any = [];
-  freeUsers:  any = [];
+  users: MatTableDataSource<User>;
+  deviceList: MatTableDataSource<Device>;
+  freeUsers:  FreeUser[] = [];
   userColumns: string[] = ['userName', 'email', 'location', 'role', 'actions'];
-  displayDeviceColumns: string[] = ["device", "user", "userEmail", "deviceActions"]
-  searchUserKey: string;
-  searchDeviceKey: string;
+  deviceColumns: string[] = ["device", "user", "userEmail", "deviceActions"]
   addUserForm = this.formBuider.group({
     UserName: ['', Validators.required],
     Email: ['', [Validators.required, Validators.email]],
@@ -36,20 +38,21 @@ export class AdminComponent implements OnInit {
     Processor: ['', Validators.required],
     RamAmount: [null, Validators.required] 
   })
-  roles = ["Admin", "Client"]
-  deviceTypes = ["Smartphone", "Tablet"]
+  roles: string[] = ["Admin", "Client"]
+  deviceTypes: string[] = ["Smartphone", "Tablet"]
   displayLocation: boolean = false;
   mismatch: boolean = false
-  hide = true;
-  deviceList: any = [];
+  hide: boolean = true;
   changeDeviceFromControl = new FormControl();
   assignUserFromControl = new FormControl();
   availableDeviceStatus: string = "Change device"
   availableUserStatus: string = "Assign user";
-  deviceToUpdate: any;
   updateMode: boolean = false;
+  deviceToUpdate: any;
   filteredDevices: any;
   filteredUsers: any;
+  searchUserKey: string;
+  searchDeviceKey: string;
 
   constructor(private formBuider: FormBuilder, private router: Router, private service: DeviceManagementService, private toastr: ToastrService, private dialog: MatDialog) { }
 
@@ -105,7 +108,7 @@ export class AdminComponent implements OnInit {
   }
 
   addUser(){
-    let body = {
+    let body: User = {
       UserName:  this.addUserForm.value.UserName,
       Email:  this.addUserForm.value.Email,
       Password:  this.addUserForm.value.Password,
@@ -333,11 +336,11 @@ export class AdminComponent implements OnInit {
   }
 
   private _filterDevices(value: any): any[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = (value || '').toLowerCase();
     return this.deviceList.filteredData.filter(device => device.deviceName.toLowerCase().includes(filterValue));
   }
   private _filterUsers(value: any): any[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = (value || '').toLowerCase();
     return this.freeUsers.filter(user => user.userName.toLowerCase().includes(filterValue));
   }
 

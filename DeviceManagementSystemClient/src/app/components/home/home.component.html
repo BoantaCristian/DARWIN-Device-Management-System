@@ -12,7 +12,7 @@
                               <mat-label>{{deviceList.deviceName}}</mat-label>
                               <input type="text" placeholder="" aria-label="Number" value="" matInput [formControl]="manageDeviceFromControl" [matAutocomplete]="auto" (click)="stopPropagation($event)">
                               <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                                <mat-option *ngFor="let device of filteredOptions | async" [value]="device.deviceName" (click)="changeDevice(device.id)">
+                                <mat-option *ngFor="let device of filteredDevices | async" [value]="device.deviceName" (click)="changeDevice(device.id)">
                                     <button [disabled]="device.userName != null" class="selectDeviceButton">  {{device.deviceName}} </button>
                                 </mat-option>
                               </mat-autocomplete>
@@ -48,7 +48,7 @@
                       <mat-label>{{availableDeviceStatus}}</mat-label>
                       <input type="text" placeholder="" aria-label="Number" matInput [formControl]="manageDeviceFromControl" [matAutocomplete]="auto">
                       <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                        <mat-option *ngFor="let device of filteredOptions | async" [value]="device.deviceName" (click)="assignDevice(device.id)">
+                        <mat-option *ngFor="let device of filteredDevices | async" [value]="device.deviceName" (click)="assignDevice(device.id)">
                           <button [disabled]="device.userName != null" class="selectDeviceButton"> {{device.deviceName}} </button>
                         </mat-option>
                       </mat-autocomplete>

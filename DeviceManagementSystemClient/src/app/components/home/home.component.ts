@@ -3,10 +3,12 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import { Sort, MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { DeviceManagementService } from 'src/app/services/device-management.service';
-import { ToastrComponentlessModule, ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { DeviceDetailsComponent } from 'src/app/dialogs/device-details/device-details.component';
+import { Device } from 'src/app/Models/Device';
+import { LoggedUser } from 'src/app/Models/LoggedUser';
 
 @Component({
   selector: 'app-home',
@@ -16,18 +18,13 @@ import { DeviceDetailsComponent } from 'src/app/dialogs/device-details/device-de
 
 export class HomeComponent implements OnInit {
   
-  loggedUser: any = {
-    userName: String,
-    email: String,
-    location: String,
-    role: String
-  };
-  deviceList: any = [];
+  loggedUser = {} as LoggedUser;
+  deviceList: MatTableDataSource<Device>;
   loggedUserDevice = new MatTableDataSource();
   displayDeviceColumns: string[] = ["device", "user", "email", "actions"]
   availableDeviceStatus: string = "No device available"
   manageDeviceFromControl = new FormControl();
-  filteredOptions: Observable<any[]>;
+  filteredDevices: Observable<any[]>;
   searchKey: string;
 
   constructor(private router: Router, private service: DeviceManagementService, private toastr: ToastrService, private dialog: MatDialog) { }
@@ -97,21 +94,7 @@ export class HomeComponent implements OnInit {
       }
     )
   }
-
-  deleteDevice(deviceId){
-    this.service.deleteDevice(deviceId).subscribe(
-      (res: any) => {
-        this.toastr.success(`Device ${res.name} deleted`, 'Success!')
-        this.getDevices()
-        setTimeout(()=> this.fetchDevicesForAutocomplete(), 200)
-        setTimeout(()=> this.fetchDataTable(), 200)
-      },
-      err => {
-        console.log(err)
-        this.toastr.error(`${err.error.message}`,'Failed!')
-      }
-    )
-  }
+  
   removeDevice(deviceId, event){
     event.stopPropagation()
     this.service.removeDevice(deviceId).subscribe(
@@ -163,12 +146,12 @@ export class HomeComponent implements OnInit {
   }
 
   private _filter(value: any): any[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = (value || '').toLowerCase();
     return this.deviceList.filteredData.filter(device => device.deviceName.toLowerCase().includes(filterValue));
   }
 
   fetchDevicesForAutocomplete(){
-    this.filteredOptions = this.manageDeviceFromControl.valueChanges.pipe(
+    this.filteredDevices = this.manageDeviceFromControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value)),
     );

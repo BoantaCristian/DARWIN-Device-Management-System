@@ -195,8 +195,8 @@
                     </div>
                 </mat-cell>
             </ng-container>
-            <mat-header-row *matHeaderRowDef="displayDeviceColumns"></mat-header-row>
-            <mat-row *matRowDef="let device; columns: displayDeviceColumns" (click)="openDeviceDetailsDialog(device.id)"></mat-row>
+            <mat-header-row *matHeaderRowDef="deviceColumns"></mat-header-row>
+            <mat-row *matRowDef="let device; columns: deviceColumns" (click)="openDeviceDetailsDialog(device.id)"></mat-row>
         </mat-table><br><br>
         <mat-form-field class="search">
             <input matInput [(ngModel)]="searchDeviceKey" placeholder="Search" autocomplete="off" (keyup)="search('devices')">
