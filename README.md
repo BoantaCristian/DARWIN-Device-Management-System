@@ -34,6 +34,7 @@ The application has a REST architecture (Representational State Transfer):
       * 2nd day (~3h): user interface -> initialize components, set graphics, add routing, add guards, assign desired components to web pages, develop login and register
       * 3rd day (~6h): user interface + device controller -> update home page (logged client) dynamically (devices list, manage client's device) and develop view device details
       * 4th day (~9h): user interface + controllers methods -> update admin dashboard page dinamically (user list, add and delete user, device list, add,update, delete, (un)assign and change device)
+      * code review and optimization (~1h)
  
 - Challanges
   * choosing a minimal user interface style
@@ -45,3 +46,4 @@ The application has a REST architecture (Representational State Transfer):
   *  code optimization: 
       *  add interfaces to all local data
       *  use async methods everywhere and remove setInterval methods (ex: after getUser, the initialization of sorting and pagination should be done async after assigning received users in a local variable)
+      *  combine assign and change device methods in one method and refactor frontend: give user id instead of user name and calll new method from controllers (already tested)
